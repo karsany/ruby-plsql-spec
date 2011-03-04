@@ -1,4 +1,4 @@
-require "spec_helper"
+require File.expand_path('../../spec_helper', __FILE__)
 
 describe "Coverage" do
   def drop_profiler_tables
@@ -158,6 +158,10 @@ END;
       adjust_test_coverage
     end
 
+    after(:all) do
+      PLSQL::Coverage.cleanup
+    end
+
     describe "details report" do
       before(:all) do
         @details_doc = Nokogiri::HTML(File.read(File.join(@directory, "#{DATABASE_USER.upcase}-TEST_PROFILER.html")))
@@ -196,13 +200,13 @@ END;
 
     end
 
-    describe "index repot" do
+    describe "index report" do
       before(:all) do
         @index_doc = Nokogiri::HTML(File.read(File.join(@directory, "index.html")))
       end
 
       it "should generate HTML table with coverage percentage" do
-        @index_doc.css("table.report tbody div.percent_graph_legend").map{|div| div.text}.should == expected_coverages
+        @index_doc.css("table.report tbody tr:contains('HR.TEST_PROFILER') div.percent_graph_legend").map{|div| div.text}.should == expected_coverages
         @index_doc.css("table.report tfoot div.percent_graph_legend").map{|div| div.text}.should == expected_coverages
       end
 

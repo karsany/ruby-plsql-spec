@@ -64,6 +64,21 @@ EOS
         ENV['PLSQL_COVERAGE'] = options[:coverage] if options[:coverage]
         ENV['PLSQL_COVERAGE_IGNORE_SCHEMAS'] = options[:"ignore-schemas"].join(',') if options[:"ignore-schemas"]
         ENV['PLSQL_COVERAGE_LIKE'] = options[:like].join(',') if options[:like]
+<<<<<<< HEAD
+        
+        if options[:html]
+          spec_output_filename = "test-results.html"
+          
+          if options[:html] != "html" # ?? if there is no filename given, the options[:html] == "html"
+            spec_output_filename = options[:html]
+          end
+          
+          speccommand = "spec --format h:#{spec_output_filename} "          
+        else
+          speccommand = "spec "
+        end
+		
+=======
 
         if options[:html]
           # if there is no filename given, the options[:html] == "html"
@@ -74,9 +89,7 @@ EOS
           speccommand = "rspec"
         end
 
-          speccommand = "spec "
-        end
-		
+>>>>>>> upstream/master
         if files.empty?
           say "Running all specs from spec/", :yellow
           puts run("#{speccommand} spec", :verbose => false)
@@ -84,6 +97,13 @@ EOS
           say "Running specs from #{files.join(', ')}", :yellow
           puts run("#{speccommand} #{files.join(' ')}", :verbose => false)
         end
+<<<<<<< HEAD
+		
+        if options[:html]
+          say "Test results in #{spec_output_filename}"
+        end		
+		
+=======
 
         if options[:html]
           say "Test results in #{spec_output_filename}"
@@ -91,8 +111,9 @@ EOS
 
         if options[:coverage]
           say "Coverage report in #{options[:coverage]}/index.html"
-        end		
+        end
 
+>>>>>>> upstream/master
         unless $?.exitstatus == 0
           say "Failing tests!", :red
           exit 1
